@@ -22,13 +22,14 @@ describe("create", function () {
       title: "new job",
       salary: 1,
       equity: 0,
-      company_handle: "c1",
+      companyHandle: "c1",
     };
   
     test("works", async function () {
       let job = await Job.create(newJob);
-      expect(job).toHaveProperty(id);
+      expect(job).toHaveProperty("id");
       delete job.id;
+      job.equity = +job.equity; // comes back as string, need to make number for comparison
       expect(job).toEqual(newJob);
   
       const result = await db.query(
@@ -57,33 +58,36 @@ describe("create", function () {
     
     test("bad request with bad salary", async function () {
         try {
-          badJob = {...newJob};
+          const badJob = {...newJob};
           badJob.salary = 0;
           await Job.create(badJob);
           fail();
         } catch (err) {
+            console.log(err);
           expect(err instanceof BadRequestError).toBeTruthy();
         }
       });
       
       test("bad request with bad equity", async function () {
         try {
-          badJob = {...newJob};
+          const badJob = {...newJob};
           badJob.equity = 1.5;
           await Job.create(badJob);
           fail();
         } catch (err) {
+            console.log(err);
           expect(err instanceof BadRequestError).toBeTruthy();
         }
       });
       
       test("bad request with nonexistant company", async function () {
         try {
-          badJob = {...newJob};
+          const badJob = {...newJob};
           badJob.company = "nonexistantCo";
           await Job.create(badJob);
           fail();
         } catch (err) {
+            console.log(err);
           expect(err instanceof BadRequestError).toBeTruthy();
         }
       });
