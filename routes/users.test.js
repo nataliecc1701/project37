@@ -129,10 +129,10 @@ describe("POST /users", function () {
 /************************************** GET /users */
 
 describe("GET /users", function () {
-  test("works for users", async function () {
+  test("works for admins", async function () {
     const resp = await request(app)
         .get("/users")
-        .set("authorization", `Bearer ${u1Token}`);
+        .set("authorization", `Bearer ${adminToken}`);
     expect(resp.body).toEqual({
       users: [
         {
@@ -164,6 +164,13 @@ describe("GET /users", function () {
     const resp = await request(app)
         .get("/users");
     expect(resp.statusCode).toEqual(401);
+  });
+  
+  test("forbidden for non-admin user", async function () {
+    const resp = await request(app)
+        .get("/users")
+        .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(403);
   });
 
   test("fails: test next() handler", async function () {
