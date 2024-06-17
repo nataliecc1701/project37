@@ -67,7 +67,7 @@ describe("create", function () {
         }
       });
       
-      test("bad request with bad equity", async function () {
+    test("bad request with bad equity", async function () {
         try {
           const badJob = {...newJob};
           badJob.equity = 1.5;
@@ -78,7 +78,7 @@ describe("create", function () {
         }
       });
       
-      test("bad request with nonexistant company", async function () {
+    test("bad request with nonexistant company", async function () {
         try {
           const badJob = {...newJob};
           badJob.company = "nonexistantCo";
@@ -88,6 +88,34 @@ describe("create", function () {
             console.log(err);
           expect(err instanceof BadRequestError).toBeTruthy();
         }
-      });
-      
+    });  
+});
+
+describe("findAll", function () {
+    test("works: no filter", async function () {
+      let jobs = await Job.findAll();
+      expect(jobs).toEqual([
+        {
+            id: expect.any(Number),
+            title: 'j3',
+            salary: 3,
+            equity: '0.5',
+            companyHandle: 'c3'
+        },
+        {
+            id: expect.any(Number),
+            title: 'j2',
+            salary: 2,
+            equity: '0',
+            companyHandle: 'c2'
+        },
+        {
+            id: expect.any(Number),
+            title: 'j1',
+            salary: 1,
+            equity: '1',
+            companyHandle: 'c1'
+        }
+      ]);
+    });
   });
