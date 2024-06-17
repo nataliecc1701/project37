@@ -90,13 +90,23 @@ describe("ensureIsAdmin", function () {
     ensureIsAdmin(req, res, next);
   })
   
-  test("unauth if not admin", function () {
+  test("forbidden if not admin", function () {
     expect.assertions(1);
     const req = {};
     const res = { locals: { user: { username: "test", is_admin: false } } };
     const next = function (err) {
-      expect(err instanceof UnauthorizedError).toBeTruthy();
+      expect(err instanceof ForbiddenError).toBeTruthy();
     };
     ensureIsAdmin(req, res, next);
+  });
+  
+  test("unauth if no login", function () {
+    expect.assertions(1);
+    const req = {};
+    const res = { locals: {} };
+    const next = function (err) {
+      expect(err instanceof UnauthorizedError).toBeTruthy();
+    };
+    ensureLoggedIn(req, res, next);
   });
 })
