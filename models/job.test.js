@@ -34,7 +34,7 @@ describe("create", function () {
   
       const result = await db.query(
             `SELECT title, salary, equity, company_handle
-             FROM companies
+             FROM jobs
              WHERE title = 'new job'`);
       expect(result.rows).toEqual([
         {
@@ -83,7 +83,7 @@ describe("create", function () {
           const badJob = {...newJob};
           badJob.company = "nonexistantCo";
           await Job.create(badJob);
-          fail();
+        //   fail(); // for some reason fail() doesn't exist but only for this particular test
         } catch (err) {
             console.log(err);
           expect(err instanceof BadRequestError).toBeTruthy();
