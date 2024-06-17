@@ -6,6 +6,7 @@ const {
   authenticateJWT,
   ensureLoggedIn,
   ensureIsAdmin,
+  ensureSelfOrAdmin,
 } = require("./auth");
 
 
@@ -89,7 +90,7 @@ describe("ensureIsAdmin", function () {
       expect(err).toBeFalsy();
     };
     ensureIsAdmin(req, res, next);
-  })
+  });
   
   test("forbidden if not admin", function () {
     expect.assertions(1);
@@ -109,5 +110,47 @@ describe("ensureIsAdmin", function () {
       expect(err instanceof UnauthorizedError).toBeTruthy();
     };
     ensureLoggedIn(req, res, next);
+  });
+})
+
+describe("ensureSelfOrAdmin", function() {
+  test("works for admin", function() {
+    expect.assertions(1);
+    const req = { params: { username : "user" }};
+    const res = { locals: { user: { username: "test", isAdmin: true } } };
+    const next = function (err) {
+      expect(err).toBeFalsy();
+    };
+    ensureSelfOrAdmin(req, res, next);
+  });
+  
+  test("works for self", function() {
+    expect.assertions(1);
+    const req = { params: { username : "test" }};
+    const res = { locals: { user: { username: "test", isAdmin: false } } };
+    const next = function (err) {
+      expect(err).toBeFalsy();
+    };
+    ensureSelfOrAdmin(req, res, next);
+  });
+  
+  test("forbidden for others", function() {
+    expect.assertions(1);
+    const req = { params: { username : "user" }};
+    const res = { locals: { user: { username: "test", isAdmin: false } } };
+    const next = function (err) {
+      expect(err instanceof ForbiddenError).toBeTruthy();
+    };
+    ensureSelfOrAdmin(req, res, next);
+  });
+  
+  test("unauth if not logged in", function() {
+    expect.assertions(1);
+    const req = { params: { username : "user" }};
+    const res = { locals: {} };
+    const next = function (err) {
+      expect(err instanceof UnauthorizedErrorError).toBeTruthy();
+    };
+    ensureSelfOrAdmin(req, res, next);
   });
 })
