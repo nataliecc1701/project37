@@ -51,7 +51,7 @@ function ensureLoggedIn(req, res, next) {
 function ensureIsAdmin(req, res, next) {
   try {
     if (!res.locals.user) throw new UnauthorizedError();
-    if (!res.locals.user.isAdmin) throw new ForbiddenError()
+    if (!res.locals.user.is_admin) throw new ForbiddenError()
     return next();
   } catch (err) {
     return next(err);
