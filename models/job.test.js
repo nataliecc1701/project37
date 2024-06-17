@@ -47,11 +47,45 @@ describe("create", function () {
   
     test("bad request with dupe", async function () {
       try {
-        await Company.create(newCompany);
-        await Company.create(newCompany);
+        await Job.create(newJob);
+        await Job.create(newJob);
         fail();
       } catch (err) {
         expect(err instanceof BadRequestError).toBeTruthy();
       }
     });
+    
+    test("bad request with bad salary", async function () {
+        try {
+          badJob = {...newJob};
+          badJob.salary = 0;
+          await Job.create(badJob);
+          fail();
+        } catch (err) {
+          expect(err instanceof BadRequestError).toBeTruthy();
+        }
+      });
+      
+      test("bad request with bad equity", async function () {
+        try {
+          badJob = {...newJob};
+          badJob.equity = 1.5;
+          await Job.create(badJob);
+          fail();
+        } catch (err) {
+          expect(err instanceof BadRequestError).toBeTruthy();
+        }
+      });
+      
+      test("bad request with nonexistant company", async function () {
+        try {
+          badJob = {...newJob};
+          badJob.company = "nonexistantCo";
+          await Job.create(badJob);
+          fail();
+        } catch (err) {
+          expect(err instanceof BadRequestError).toBeTruthy();
+        }
+      });
+      
   });
