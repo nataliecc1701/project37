@@ -63,7 +63,6 @@ describe("create", function () {
           await Job.create(badJob);
           fail();
         } catch (err) {
-            console.log(err);
           expect(err instanceof BadRequestError).toBeTruthy();
         }
       });
@@ -75,7 +74,6 @@ describe("create", function () {
           await Job.create(badJob);
           fail();
         } catch (err) {
-            console.log(err);
           expect(err instanceof BadRequestError).toBeTruthy();
         }
       });
