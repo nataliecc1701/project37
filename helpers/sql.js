@@ -1,6 +1,17 @@
 const { BadRequestError } = require("../expressError");
 
-// THIS NEEDS SOME GREAT DOCUMENTATION.
+/** Converts key-value pairs from javascript object to SQL
+ * Takes in an object of key-value pairs where the keys are column names in the database
+ * and the values are the values to set them to, and a second object containing
+ * "translations" of javascript object properties to SQL column names, with the
+ * js properties as keys and the SQL column names as values. Names which are the same
+ * needn't be translated
+ * 
+ * returns an object containing two properties:
+ * setCols: a string that can be inserted into an SQL query containing all of the columns
+ * of format '"col_one"=$1, "col_two"=$2'
+ * values: the values to set the columns to, in order, as an array
+ */
 
 function sqlForPartialUpdate(dataToUpdate, jsToSql) {
   const keys = Object.keys(dataToUpdate);
