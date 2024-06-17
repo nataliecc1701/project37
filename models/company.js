@@ -60,6 +60,50 @@ class Company {
            ORDER BY name`);
     return companiesRes.rows;
   }
+  
+  /** Find companies matching given parameters
+   * takes a matchParams object which can be provided from the query string
+   * {name, minEmployees, maxEmployees}
+   * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
+   */
+  
+  static async findMatching(matchParams) {
+    const keyStrs = []
+    const valStrs = []
+    if ("name" in matchParams) {
+      keyStrs.push(`name ILIKE $${keyStrs.length+1}`);
+      valStrs.push(`%${matchParams.name}%`);
+    }
+    
+    if ("minEmployees" in matchParams) {
+      if (matchParams.minEmployees > matchParams.maxEmployees) {
+        throw new BadRequestError("Minimum employees cannot be greater than maximum employees")
+      }
+      keyStrs.push(`num_employees >= $${keyStrs.length+1}`);
+      valStrs.push(matchParams.minEmployees);
+    }
+    if ("maxEmployees" in matchParams) {
+      keyStrs.push(`num_employees <= $${keyStrs.length+1}`);
+      valStrs.push(matchParams.maxEmployees);
+    }
+    if (keyStrs.length === 0) {
+      // This function should never be called like this, but just in case
+      return await Company.findAll()
+    }
+    else {
+      const whereStr = `WHERE ${keyStrs.join(" AND ")}`
+      const companiesRes = await db.query(
+        `SELECT handle,
+                name,
+                description,
+                num_employees AS "numEmployees",
+                logo_url AS "logoUrl"
+        FROM companies
+        ${whereStr}`,
+      valStrs);
+      return companiesRes.rows;
+    }
+  }
 
   /** Given a company handle, return data about company.
    *
