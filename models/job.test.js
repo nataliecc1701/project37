@@ -40,7 +40,7 @@ describe("create", function () {
         {
           title: "new job",
           salary: 1,
-          equity: 0,
+          equity: "0",
           company_handle: "c1",
         },
       ]);
