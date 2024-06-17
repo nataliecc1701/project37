@@ -58,9 +58,23 @@ function ensureIsAdmin(req, res, next) {
   }
 }
 
+function ensureSelfOrAdmin(req, res, next) {
+  try {
+    if (!res.locals.user) throw new UnauthorizedError();
+    if (!res.locals.user.isAdmin &&
+      res.locals.user.username !== req.params.username) {
+      throw new ForbiddenError("Access forbidden")
+    }
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+}
+
 
 module.exports = {
   authenticateJWT,
   ensureLoggedIn,
   ensureIsAdmin,
+  ensureSelfOrAdmin,
 };
