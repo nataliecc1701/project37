@@ -68,8 +68,8 @@ class Job {
                     salary,
                     equity,
                     company_handle AS "companyHandle"
-             FROM companies
-             ORDER BY name`);
+             FROM jobs
+             ORDER BY id DESC`);
       return jobsRes.rows;
     }
   
