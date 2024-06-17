@@ -53,6 +53,24 @@ class Job {
         } catch (err) {
             throw new BadRequestError("job posting failed, check data and try again");
         }
+        
+    }
+    
+    /** Find all jobs
+     * 
+     * returns [{ id, title, salary, equity, companyHandle },...]
+     */
+        
+    static async findAll() {
+        const jobsRes = await db.query(
+            `SELECT id,
+                    title,
+                    salary,
+                    equity,
+                    company_handle AS "companyHandle"
+             FROM companies
+             ORDER BY name`);
+      return jobsRes.rows;
     }
   
 }
