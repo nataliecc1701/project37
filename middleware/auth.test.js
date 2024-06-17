@@ -149,7 +149,7 @@ describe("ensureSelfOrAdmin", function() {
     const req = { params: { username : "user" }};
     const res = { locals: {} };
     const next = function (err) {
-      expect(err instanceof UnauthorizedErrorError).toBeTruthy();
+      expect(err instanceof UnauthorizedError).toBeTruthy();
     };
     ensureSelfOrAdmin(req, res, next);
   });
