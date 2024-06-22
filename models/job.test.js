@@ -91,6 +91,8 @@ describe("create", function () {
     });  
 });
 
+/***************************** findAll */
+
 describe("findAll", function () {
     test("works: no filter", async function () {
       let jobs = await Job.findAll();
@@ -115,7 +117,29 @@ describe("findAll", function () {
             salary: 1,
             equity: '1',
             companyHandle: 'c1'
-        }
-      ]);
+        }]);
+    });
+});
+
+/************************************** get */
+
+describe("get", function () {
+    test("works", async function () {
+      let job = await Job.get(1);
+      expect(job).toEqual({
+        title: "j1",
+        salary: 1,
+        equity: "1",
+        companyHandle: "c1",
+      });
+    });
+  
+    test("not found if no such company", async function () {
+      try {
+        await Company.get(-1);
+        fail();
+      } catch (err) {
+        expect(err instanceof NotFoundError).toBeTruthy();
+      }
     });
   });
