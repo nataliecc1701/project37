@@ -219,4 +219,24 @@ describe("update", function () {
         expect(err instanceof BadRequestError).toBeTruthy();
       }
     });
+});
+
+/************************************** remove */
+
+describe("remove", function () {
+    test("works", async function () {
+      await Job.remove("1");
+      const res = await db.query(
+          "SELECT id FROM jobs WHERE id=1");
+      expect(res.rows.length).toEqual(0);
+    });
+  
+    test("not found if no such company", async function () {
+      try {
+        await Job.remove(-1);
+        fail();
+      } catch (err) {
+        expect(err instanceof NotFoundError).toBeTruthy();
+      }
+    });
   });
