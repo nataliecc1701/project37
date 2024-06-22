@@ -169,7 +169,7 @@ describe("update", function () {
       expect(result.rows).toEqual([{
         id: 1,
         title: "New",
-        equity: ".75",
+        equity: "0.75",
         salary: 10,
         company_handle: "c1",
       }]);
@@ -185,12 +185,13 @@ describe("update", function () {
       let job = await Job.update(1, updateDataSetNulls);
       expect(job).toEqual({
         id: 1,
+        companyHandle: "c1",
         ...updateDataSetNulls,
       });
   
       const result = await db.query(
             `SELECT id, title, salary, equity, company_handle
-             FROM companies
+             FROM jobs
              WHERE handle = 'c1'`);
       expect(result.rows).toEqual([{
         id: 1,
