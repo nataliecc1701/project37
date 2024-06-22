@@ -127,6 +127,7 @@ describe("get", function () {
     test("works", async function () {
       let job = await Job.get(1);
       expect(job).toEqual({
+        id: 1,
         title: "j1",
         salary: 1,
         equity: "1",
@@ -136,7 +137,7 @@ describe("get", function () {
   
     test("not found if no such company", async function () {
       try {
-        await Company.get(-1);
+        await Job.get(-1);
         fail();
       } catch (err) {
         expect(err instanceof NotFoundError).toBeTruthy();
