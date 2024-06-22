@@ -72,7 +72,29 @@ class Job {
              ORDER BY id DESC`);
       return jobsRes.rows;
     }
-  
+    
+    /** Given an ID, returns a job.
+     * Returns {id, title, salary, equity, companyHandle}
+     */
+    
+    static async get(id) {
+        const jobRes = await db.query(
+            `SELECT id,
+                    title,
+                    salary,
+                    equity,
+                    company_handle AS "companyHandle"
+            FROM jobs
+            WHERE id=$1`,
+            [id]);
+        
+        const job = jobRes.rows[0];
+        
+        if (!job) throw new NotFoundError(`No job with id ${id}`);
+        
+        return job;
+    }
+    
 }
 
 module.exports = Job;
