@@ -151,7 +151,7 @@ describe("update", function () {
     const updateData = {
       title: "New",
       salary: 10,
-      equity: ".75",
+      equity: "0.75",
     };
   
     test("works", async function () {
@@ -192,7 +192,7 @@ describe("update", function () {
       const result = await db.query(
             `SELECT id, title, salary, equity, company_handle
              FROM jobs
-             WHERE handle = 'c1'`);
+             WHERE id = 1`);
       expect(result.rows).toEqual([{
         id: 1,
         title: "New",
