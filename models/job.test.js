@@ -219,6 +219,15 @@ describe("update", function () {
         expect(err instanceof BadRequestError).toBeTruthy();
       }
     });
+    
+    test("bad request with invalid data", async function () {
+        try {
+            await Job.update(1, {salary: -1});
+            fail();
+        } catch (err) {
+            expect(err instanceof BadRequestError).toBeTruthy();
+        }
+    })
 });
 
 /************************************** remove */
