@@ -121,6 +121,89 @@ describe("findAll", function () {
     });
 });
 
+/***************************** findMatching */
+
+describe("findMatching", function () {
+    test("works with all parameters", async function() {
+      let jobs = await Job.findMatching({
+        title: "j",
+        minSalary:1,
+        hasEquity:false,
+      });
+      expect(jobs).toEqual([
+        {
+            id: expect.any(Number),
+            title: 'j3',
+            salary: 3,
+            equity: '0.5',
+            companyHandle: 'c3'
+        },
+        {
+            id: expect.any(Number),
+            title: 'j2',
+            salary: 2,
+            equity: '0',
+            companyHandle: 'c2'
+        },
+        {
+            id: expect.any(Number),
+            title: 'j1',
+            salary: 1,
+            equity: '1',
+            companyHandle: 'c1'
+        }]);
+    });
+    test("works by name alone", async function() {
+      let jobs = await Job.findMatching({
+        name: "j1"
+      });
+      expect(jobs).toEqual([
+        {
+            id: expect.any(Number),
+            title: 'j1',
+            salary: 1,
+            equity: '1',
+            companyHandle: 'c1'
+        }
+      ]);
+    });
+    test("works by min salary", async function() {
+      let jobs = await Job.findMatching({
+        minSalary : 3
+      });
+      expect(jobs).toEqual([
+        {
+            id: expect.any(Number),
+            title: 'j3',
+            salary: 3,
+            equity: '0.5',
+            companyHandle: 'c3'
+        },
+      ]);
+    });
+    test("works by equity", async function() {
+      let jobs = await Job.findMatching({
+        hasEquity: true
+      });
+      expect(jobs).toEqual([
+        {
+            id: expect.any(Number),
+            title: 'j2',
+            salary: 2,
+            equity: '0',
+            companyHandle: 'c2'
+        },
+        {
+            id: expect.any(Number),
+            title: 'j1',
+            salary: 1,
+            equity: '1',
+            companyHandle: 'c1'
+        }
+      ]);
+    })
+})
+
 /************************************** get */
 
 describe("get", function () {
