@@ -14,6 +14,8 @@ async function commonBeforeAll() {
   
   await db.query("DELETE FROM jobs")
   await db.query("ALTER SEQUENCE jobs_id_seq RESTART");
+  
+  await db.query("DELETE FROM applications");
 
   await Company.create(
       {
