@@ -74,7 +74,7 @@ describe("POST /jobs", function () {
     });
 });
 
-/************************************** GET /companies */
+/************************************** GET /jobs */
 
 describe("GET /jobs", function () {
     test("ok for anon", async function () {
@@ -180,5 +180,76 @@ describe("GET /jobs", function () {
           .get("/companies")
           .set("authorization", `Bearer ${u1Token}`);
       expect(resp.statusCode).toEqual(500);
+    });
+});
+
+/************************************** PATCH /jobs/:id */
+
+describe("PATCH /jobs/:id", function () {
+    test("works for admins", async function () {
+      const resp = await request(app)
+          .patch(`/jobs/1`)
+          .send({
+            title: "Patched Job",
+          })
+          .set("authorization", `Bearer ${adminToken}`);
+      expect(resp.body).toEqual({
+        job: {
+          id: 1,
+          title: "Patched Job",
+          salary: 1,
+          equity: "0",
+          companyHandle: "c1",
+        },
+      });
+    });
+  
+    test("unauth for anon", async function () {
+      const resp = await request(app)
+            .patch(`/jobs/1`)
+            .send({
+              name: "Patched Job",
+            });
+      expect(resp.statusCode).toEqual(401);
+    });
+    
+    test("forbidden for non-admin users", async function () {
+      const resp = await request(app)
+          .patch(`/jobs/1`)
+          .send({
+            name: "Patched Job",
+          })
+          .set("authorization", `Bearer ${u1Token}`);
+      expect(resp.statusCode).toEqual(403);
+    });
+  
+    test("not found on no job matching id", async function () {
+      const resp = await request(app)
+          .patch(`/jobs/-1`)
+          .send({
+            title: "new nope",
+          })
+          .set("authorization", `Bearer ${adminToken}`);
+      expect(resp.statusCode).toEqual(404);
+    });
+  
+    test("bad request on companyHandle change attempt", async function () {
+      const resp = await request(app)
+          .patch(`/jobs/1`)
+          .send({
+            companyHandle: "c2",
+          })
+          .set("authorization", `Bearer ${adminToken}`);
+      expect(resp.statusCode).toEqual(400);
+    });
+  
+    test("bad request on invalid data", async function () {
+      const resp = await request(app)
+          .patch(`/jobs/1`)
+          .send({
+            salary: -1,
+          })
+          .set("authorization", `Bearer ${adminToken}`);
+      expect(resp.statusCode).toEqual(400);
     });
 });
