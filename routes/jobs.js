@@ -38,4 +38,28 @@ router.post("/", ensureIsAdmin, async function (req, res, next) {
     }
 });
 
+/** GET /  =>
+ *   { jobs: [ { id, title, salary, equity, companyHandle }, ...] }
+ *
+ * Can filter on provided search filters:
+ * (None Yet)
+ *
+ * Authorization required: none
+ */
+
+    router.get("/", async function (req, res, next) {
+        try {
+          let jobs;
+          if (true) {
+            jobs = await Job.findAll();
+          }
+        //   else {
+        //     companies = await Company.findMatching(req.query);
+        //   }
+          return res.json({ jobs });
+        } catch (err) {
+          return next(err);
+        }
+      });
+
 module.exports = router;
