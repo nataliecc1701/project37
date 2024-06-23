@@ -108,68 +108,93 @@ describe("GET /jobs", function () {
       });
     });
     
-    // test("runs with name parameter", async function () {
-    //   const resp = await request(app).get("/companies").query({ name: "c1" });
-    //   expect(resp.body).toEqual({
-    //     companies:
-    //       [
-    //         {
-    //           handle: "c1",
-    //           name: "C1",
-    //           description: "Desc1",
-    //           numEmployees: 1,
-    //           logoUrl: "http://c1.img",
-    //         }
-    //       ]
-    //   });
-    // })
+    test("runs with title parameter", async function () {
+      const resp = await request(app).get("/jobs").query({ title: "j1" });
+      expect(resp.body).toEqual({
+        jobs:
+          [
+            {
+                id: expect.any(Number),
+                title: "j1",
+                salary: 1,
+                equity: "0",
+                companyHandle: "c1"
+            }
+          ]
+      });
+    })
     
-    // test("runs with min and max parameters", async function () {
-    //   const resp = await request(app).get("/companies")
-    //     .query({ minEmployees: 2, maxEmployees: 2});
-    //   expect(resp.body).toEqual({
-    //     companies:
-    //       [
-    //         {
-    //           handle: "c2",
-    //           name: "C2",
-    //           description: "Desc2",
-    //           numEmployees: 2,
-    //           logoUrl: "http://c2.img",
-    //         },
-    //       ]
-    //   });
-    // })
+    test("runs with min_salary parameter", async function () {
+      const resp = await request(app).get("/jobs")
+        .query({ min_salary: 3});
+      expect(resp.body).toEqual({
+        jobs:
+          [
+            {
+                id: expect.any(Number),
+                title: "j3",
+                salary: 3,
+                equity: "0.5",
+                companyHandle: "c3"
+            },
+          ]
+      });
+    })
     
-    // test("runs with bogus parameters", async function () {
-    //   const resp = await request(app).get("/companies").query({ bogus: "foo" });
-    //   expect(resp.body).toEqual({
-    //     companies:
-    //         [
-    //           {
-    //             handle: "c1",
-    //             name: "C1",
-    //             description: "Desc1",
-    //             numEmployees: 1,
-    //             logoUrl: "http://c1.img",
-    //           },
-    //           {
-    //             handle: "c2",
-    //             name: "C2",
-    //             description: "Desc2",
-    //             numEmployees: 2,
-    //             logoUrl: "http://c2.img",
-    //           },
-    //           {
-    //             handle: "c3",
-    //             name: "C3",
-    //             description: "Desc3",
-    //             numEmployees: 3,
-    //             logoUrl: "http://c3.img",
-    //           },
-    //         ],
-    //   })
-    // })
+    test("runs with has_equity parameter", async function () {
+        const resp = await request(app).get("/jobs")
+            .query({ has_equity: true});
+        expect(resp.body).toEqual({
+            jobs:
+              [
+                {
+                    id: expect.any(Number),
+                    title: "j2",
+                    salary: 2,
+                    equity: "1",
+                    companyHandle: "c2"
+                },
+                {
+                    id: expect.any(Number),
+                    title: "j3",
+                    salary: 3,
+                    equity: "0.5",
+                    companyHandle: "c3"
+                },
+              ]
+        });
+    })
+    
+    test("runs with bogus parameters", async function () {
+      const resp = await request(app).get("/jobs").query({ bogus: "foo" });
+      expect(resp.body).toEqual({
+        jobs:
+            [
+                {
+                    id: expect.any(Number),
+                    title: "j3",
+                    salary: 3,
+                    equity: "0.5",
+                    companyHandle: "c3"
+                },
+                {
+                    id: expect.any(Number),
+                    title: "j2",
+                    salary: 2,
+                    equity: "1",
+                    companyHandle: "c2"
+                },
+                {
+                    id: expect.any(Number),
+                    title: "j1",
+                    salary: 1,
+                    equity: "0",
+                    companyHandle: "c1"
+                }
+                ,
+            ],
+      })
+    })
   
     test("fails: test next() handler", async function () {
       // there's no normal failure event which will cause this route to fail ---
