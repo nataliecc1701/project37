@@ -84,10 +84,10 @@ describe("GET /jobs", function () {
             [
                 {
                     id: expect.any(Number),
-                    title: "j1",
-                    salary: 1,
-                    equity: "0",
-                    companyHandle: "c1"
+                    title: "j3",
+                    salary: 3,
+                    equity: "0.5",
+                    companyHandle: "c3"
                 },
                 {
                     id: expect.any(Number),
@@ -98,11 +98,12 @@ describe("GET /jobs", function () {
                 },
                 {
                     id: expect.any(Number),
-                    title: "j3",
-                    salary: 3,
-                    equity: "0.5",
-                    companyHandle: "c3"
-                  },
+                    title: "j1",
+                    salary: 1,
+                    equity: "0",
+                    companyHandle: "c1"
+                }
+                ,
             ],
       });
     });
