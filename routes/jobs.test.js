@@ -24,7 +24,7 @@ afterAll(commonAfterAll);
 describe("POST /jobs", function () {
     const newJob = {
       title: "new",
-      company_handle: "c1",
+      companyHandle: "c1",
       salary: 10,
       equity: "0.75"
     };
