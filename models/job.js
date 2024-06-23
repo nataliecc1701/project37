@@ -47,9 +47,9 @@ class Job {
                 VALUES ($1, $2, $3, $4)
                 RETURNING id, title, salary, equity, company_handle AS "companyHandle"`,
                 [title, salary, equity, companyHandle]);
-            const company = result.rows[0];
+            const job = result.rows[0];
             
-            return company;
+            return job;
         } catch (err) {
             throw new BadRequestError("job posting failed, check data and try again");
         }
