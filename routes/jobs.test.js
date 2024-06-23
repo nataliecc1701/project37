@@ -275,3 +275,34 @@ describe("PATCH /jobs/:id", function () {
       expect(resp.statusCode).toEqual(400);
     });
 });
+
+/************************************** DELETE /jobs/:id */
+
+describe("DELETE /jobs/:id", function () {
+    test("works for admin", async function () {
+      const resp = await request(app)
+          .delete(`/jobs/1`)
+          .set("authorization", `Bearer ${adminToken}`);
+      expect(resp.body).toEqual({ deleted: "1" });
+    });
+    
+    test("forbidden for non-admin users", async function () {
+      const resp = await request(app)
+          .delete(`/jobs/1`)
+          .set("authorization", `Bearer ${u1Token}`);
+      expect(resp.statusCode).toEqual(403);
+    });
+  
+    test("unauth for anon", async function () {
+      const resp = await request(app)
+          .delete(`/jobs/1`);
+      expect(resp.statusCode).toEqual(401);
+    });
+  
+    test("not found for no such company", async function () {
+      const resp = await request(app)
+          .delete(`/jobs/-1`)
+          .set("authorization", `Bearer ${adminToken}`);
+      expect(resp.statusCode).toEqual(404);
+    });
+});
