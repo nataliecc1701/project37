@@ -375,3 +375,45 @@ describe("DELETE /users/:username", function () {
     expect(resp.statusCode).toEqual(404);
   });
 });
+
+
+/************************ POST /users/:username/jobs/:id */
+
+describe("POST /users/:username/jobs/:id", function () {
+  test("works for admin", async function () {
+    const resp = await request(app)
+        .post(`/users/u2/jobs/1`)
+        .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(201);
+    expect(resp.body).toEqual( {applied: 1 })
+  })
+  
+  test("works for self", async function () {
+    const resp = await request(app)
+        .post(`/users/u1/jobs/2`)
+        .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(201);
+    expect(resp.body).toEqual( {applied: 2 })
+  })
+  
+  test("forbidden for other", async function () {
+    const resp = await request(app)
+        .post(`/users/u2/jobs/2`)
+        .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(403);
+  })
+  
+  test("404 if user does not exist", async function () {
+    const resp = await request(app)
+        .post(`/users/nope/jobs/1`)
+        .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(404);
+  })
+  
+  test("404 if job does not exist", async function () {
+    const resp = await request(app)
+        .post(`/users/u1/jobs/-1`)
+        .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(404);
+  })
+})
