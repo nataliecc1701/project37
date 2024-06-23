@@ -123,9 +123,13 @@ class Job {
                                 salary, 
                                 equity, 
                                 company_handle AS "companyHandle"`;
-    const result = await db.query(querySql, [...values, id]);
+    let result;
+    try {
+        result = await db.query(querySql, [...values, id]);
+    } catch {
+        throw new BadRequestError(`Invalid data`)
+    }
     const job = result.rows[0];
-
     if (!job) throw new NotFoundError(`No job with id ${id}`);
 
     return job;
