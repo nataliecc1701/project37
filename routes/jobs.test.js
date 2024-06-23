@@ -191,7 +191,7 @@ describe("GET /jobs/:id", function () {
       expect(resp.body).toEqual({
         job: {
           companyHandle: "c1",
-          title: "J1",
+          title: "j1",
           salary: 1,
           equity: "0",
           id: 1,
