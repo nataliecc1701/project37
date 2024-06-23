@@ -216,7 +216,7 @@ class User {
       FROM users
       WHERE username=$1`, [username]);
     if (!usernameCheck.rows.length) {
-      return new NotFoundError(`user not found: ${username}`)
+      throw new NotFoundError(`user not found: ${username}`)
     }
     
     const jobIdCheck = await db.query(`
@@ -224,7 +224,7 @@ class User {
       FROM jobs
       WHERE id=$1`, [jobId]);
     if (!jobIdCheck.rows.length) {
-      return new NotFoundError(`job not found: ${jobId}`)
+      throw new NotFoundError(`job not found: ${jobId}`)
     }
     
     let result = await db.query(`
