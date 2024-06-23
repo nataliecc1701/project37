@@ -183,6 +183,28 @@ describe("GET /jobs", function () {
     });
 });
 
+/************************************** GET /jobs/:id */
+
+describe("GET /jobs/:id", function () {
+    test("works for anon", async function () {
+      const resp = await request(app).get(`/jobs/1`);
+      expect(resp.body).toEqual({
+        job: {
+          companyHandle: "c1",
+          title: "J1",
+          salary: 1,
+          equity: "0",
+          id: 1,
+        },
+      });
+    });
+  
+    test("not found for no matching job", async function () {
+      const resp = await request(app).get(`/jobs/-1`);
+      expect(resp.statusCode).toEqual(404);
+    });
+  });
+
 /************************************** PATCH /jobs/:id */
 
 describe("PATCH /jobs/:id", function () {
