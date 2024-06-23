@@ -73,6 +73,47 @@ class Job {
       return jobsRes.rows;
     }
     
+    /** Find companies matching given parameters
+   * takes a matchParams object which can be provided from the query string
+   * {title, min_salary, has_equity}
+   * returns [{ id, title, salary, equity, companyHandle },...]
+   */
+  
+  static async findMatching(matchParams) {
+    const keyStrs = []
+    const valStrs = []
+    if ("title" in matchParams) {
+      keyStrs.push(`title ILIKE $${keyStrs.length+1}`);
+      valStrs.push(`%${matchParams.title}%`);
+    }
+    
+    if ("min_salary" in matchParams) {
+      keyStrs.push(`salary >= $${keyStrs.length+1}`);
+      valStrs.push(matchParams.min_salary);
+    }
+    if (matchParams.has_equity) {
+      keyStrs.push(`equity > $${keyStrs.length+1}`);
+      valStrs.push(0);
+    }
+    if (keyStrs.length === 0) {
+      // This function should never be called like this, but just in case
+      return await Job.findAll()
+    }
+    else {
+      const whereStr = `WHERE ${keyStrs.join(" AND ")}`
+      const jobsRes = await db.query(
+        `SELECT id,
+                title,
+                salary,
+                equity,
+                company_handle AS "companyHandle"
+        FROM jobs
+        ${whereStr}`,
+      valStrs);
+      return jobsRes.rows;
+    }
+  }
+    
     /** Given an ID, returns a job.
      * Returns {id, title, salary, equity, companyHandle}
      */
