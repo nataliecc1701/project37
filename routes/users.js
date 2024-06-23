@@ -106,7 +106,7 @@ router.patch("/:username", ensureSelfOrAdmin, async function (req, res, next) {
 
 /** DELETE /[username]  =>  { deleted: username }
  *
- * Authorization required: login
+ * Authorization required: self or admin
  **/
 
 router.delete("/:username", ensureSelfOrAdmin, async function (req, res, next) {
@@ -118,5 +118,19 @@ router.delete("/:username", ensureSelfOrAdmin, async function (req, res, next) {
   }
 });
 
+/** POST /[username]/jobs/[id] => { applied: id } 
+ * 
+ *  Authorization required: Self or Admin
+*/
+
+router.post("/:username/jobs/:id", ensureSelfOrAdmin, async function (req, res, next) {
+  const { username, id } = req.params;
+  try {
+    const applic = await User.apply(username, id);
+    return res.status(201).json(applic);
+  } catch (err) {
+    return next(err)
+  }
+})
 
 module.exports = router;
