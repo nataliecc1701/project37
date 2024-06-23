@@ -50,12 +50,12 @@ router.post("/", ensureIsAdmin, async function (req, res, next) {
 router.get("/", async function (req, res, next) {
     try {
       let jobs;
-      if (true) {
+      if (!req.query) {
         jobs = await Job.findAll();
       }
-    //   else {
-    //     companies = await Company.findMatching(req.query);
-    //   }
+      else {
+        jobs = await Job.findMatching(req.query);
+      }
       return res.json({ jobs });
     } catch (err) {
       return next(err);
