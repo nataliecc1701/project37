@@ -127,8 +127,8 @@ describe("findMatching", function () {
     test("works with all parameters", async function() {
       let jobs = await Job.findMatching({
         title: "j",
-        minSalary:1,
-        hasEquity:false,
+        min_salary:1,
+        has_equity:false,
       });
       expect(jobs).toEqual([
         {
@@ -155,7 +155,7 @@ describe("findMatching", function () {
     });
     test("works by name alone", async function() {
       let jobs = await Job.findMatching({
-        name: "j1"
+        title: "j1"
       });
       expect(jobs).toEqual([
         {
@@ -169,7 +169,7 @@ describe("findMatching", function () {
     });
     test("works by min salary", async function() {
       let jobs = await Job.findMatching({
-        minSalary : 3
+        min_salary : 3
       });
       expect(jobs).toEqual([
         {
@@ -183,7 +183,7 @@ describe("findMatching", function () {
     });
     test("works by equity", async function() {
       let jobs = await Job.findMatching({
-        hasEquity: true
+        has_equity: true
       });
       expect(jobs).toEqual([
         {
