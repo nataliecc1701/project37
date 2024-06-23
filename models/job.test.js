@@ -213,16 +213,16 @@ describe("findByCompany", function () {
         expect(jobs).toEqual([
             {
                 id: expect.any(Number),
+                title: 'j2',
+                salary: 2,
+                equity: '0'
+            },
+            {
+                id: expect.any(Number),
                 title: 'j1',
                 salary: 1,
                 equity: '1'
             },
-            {
-                id: expect.any(Number),
-                title: 'j2',
-                salary: 2,
-                equity: '0'
-            }
         ])
     })
 })
