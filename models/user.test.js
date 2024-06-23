@@ -256,7 +256,6 @@ describe("apply", function() {
   test("not found if no matching job", async function() {
     try {
       await User.apply("u1", -1);
-      fail();
     } catch(err) {
       console.log(err)
       expect(err instanceof NotFoundError).toBeTruthy();
