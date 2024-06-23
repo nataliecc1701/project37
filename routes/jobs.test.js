@@ -19,7 +19,7 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-/************************************** POST /companies */
+/************************************** POST /jobs */
 
 describe("POST /jobs", function () {
     const newJob = {
@@ -31,7 +31,7 @@ describe("POST /jobs", function () {
   
     test("ok for admins", async function () {
       const resp = await request(app)
-          .post("/jops")
+          .post("/jobs")
           .send(newJob)
           .set("authorization", `Bearer ${adminToken}`);
       expect(resp.statusCode).toEqual(201);
