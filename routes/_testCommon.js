@@ -10,6 +10,9 @@ async function commonBeforeAll() {
   await db.query("DELETE FROM users");
   // noinspection SqlWithoutWhere
   await db.query("DELETE FROM companies");
+  
+  await db.query("DELETE FROM jobs")
+  await db.query("ALTER SEQUENCE jobs_id_seq RESTART");
 
   await Company.create(
       {
@@ -59,6 +62,24 @@ async function commonBeforeAll() {
     email: "user3@user.com",
     password: "password3",
     isAdmin: false,
+  });
+  await Job.create({
+    title: "j1",
+    salary: 1,
+    equity: "0",
+    company_handle: "c1"
+  });
+  await Job.create({
+    title: "j2",
+    salary: 2,
+    equity: "1",
+    company_handle: "c2"
+  });
+  await Job.create({
+    title: "j3",
+    salary: 3,
+    equity: "0.5",
+    company_handle: "c3"
   });
 }
 
