@@ -109,7 +109,7 @@ describe("findAll", function () {
             title: 'j2',
             salary: 2,
             equity: '0',
-            companyHandle: 'c2'
+            companyHandle: 'c1'
         },
         {
             id: expect.any(Number),
@@ -143,7 +143,7 @@ describe("findMatching", function () {
             title: 'j2',
             salary: 2,
             equity: '0',
-            companyHandle: 'c2'
+            companyHandle: 'c1'
         },
         {
             id: expect.any(Number),
@@ -202,6 +202,28 @@ describe("findMatching", function () {
             companyHandle: 'c3'
         },
       ]);
+    })
+})
+
+/**************************** findByCompany */
+
+describe("findByCompany", function () {
+    test("works", async function () {
+        let jobs = await Job.findByCompany("c1");
+        expect(jobs).toEqual([
+            {
+                id: expect.any(Number),
+                title: 'j1',
+                salary: 1,
+                equity: '1'
+            },
+            {
+                id: expect.any(Number),
+                title: 'j2',
+                salary: 2,
+                equity: '0'
+            }
+        ])
     })
 })
 
